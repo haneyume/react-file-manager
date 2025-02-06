@@ -23,7 +23,6 @@ const Navbar = () => {
       </div>
       <div className="flex flex-col">
         {initialFolder.map((file) => {
-          console.log("file", file);
           return (
             <a
               className="link"

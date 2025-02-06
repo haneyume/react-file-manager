@@ -14,7 +14,7 @@ import CreateNew from "./CreateNew";
 import InfoModal from "./InfoModal";
 
 const Workspace = () => {
-  const { files, setFiles } = useFileManager();
+  const { files, setFiles, currentFolder, setCurrentFolder } = useFileManager();
 
   const [infoOpened, setInfoOpened] = useState(false);
 
@@ -31,8 +31,10 @@ const Workspace = () => {
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null);
 
   const renderFiles = useMemo(() => {
-    return files?.filter((f) => f.id !== "0");
-  }, [files]);
+    return files?.filter(
+      (f) => f.id !== "0" && f.parentId === currentFolder.id
+    );
+  }, [files, currentFolder]);
 
   // 當點擊右鍵時，設定選單開啟
   const clickRightEvent = ({
@@ -96,6 +98,8 @@ const Workspace = () => {
     setFiles(newFiles);
   };
 
+  console.log("currentFolder", currentFolder);
+
   return (
     <>
       {/* 檔案資訊modal */}
@@ -105,7 +109,7 @@ const Workspace = () => {
         file={selectedFile!}
       />
 
-      <div className="w-[90%] h-full" style={{ border: "1px solid #c91414" }}>
+      <div className="w-[90%] h-full">
         <Path />
 
         <div className="flex">
@@ -124,6 +128,12 @@ const Workspace = () => {
                     <div
                       className="flex flex-col items-center m-2 cursor-pointer"
                       key={file.id}
+                      onClick={() => {
+                        console.log("click", file);
+                        if (file.isDir) {
+                          setCurrentFolder(file);
+                        }
+                      }}
                       onContextMenu={(e) =>
                         clickRightEvent({
                           e,
