@@ -18,6 +18,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ opened, close, file }) => {
           <IconFileFilled size={100} color="#fdcd53" />
         )}
         <Text className="mt-2">名稱: {file?.name}</Text>
+        <Text className="mt-2">path: {file?.path}</Text>
         <Text className="mt-2">
           創建時間: {formattedDate(file?.lastModified || 0)}
         </Text>

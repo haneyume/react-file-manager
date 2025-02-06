@@ -4,7 +4,19 @@ import ViewStyle from "./ViewStyle";
 import { useFileManager } from "../context/FileManagerContext";
 
 const Path = () => {
-  const { currentFolder } = useFileManager();
+  const { files, currentFolder, setCurrentFolder } = useFileManager();
+
+  // 點擊 返回上一層
+  const clickPreviousLevel = () => {
+    if (currentFolder.id !== "0") {
+      console.log("currentFolder.id", currentFolder.id);
+      const findParentFolder = files?.find(
+        (f) => f.id === currentFolder.parentId
+      );
+
+      setCurrentFolder(findParentFolder!);
+    }
+  };
   return (
     <div className="flex items-center w-full justify-between">
       <div
@@ -12,7 +24,14 @@ const Path = () => {
           display: "flex",
         }}
       >
-        <IconCircleArrowUpFilled color="#b1b1b1" />
+        <div
+          className={
+            currentFolder.id === "0" ? "cursor-default" : "cursor-pointer"
+          }
+          onClick={clickPreviousLevel}
+        >
+          <IconCircleArrowUpFilled color="#b1b1b1" />
+        </div>
 
         <div className="ml-3 flex">
           {currentFolder.id !== "0" && currentFolder?.name && (

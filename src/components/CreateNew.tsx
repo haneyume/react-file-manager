@@ -6,33 +6,41 @@ import { FileMode, FileType } from "../type";
 import { useState } from "react";
 
 const CreateNew = () => {
-  const { setFiles } = useFileManager();
+  const { setFiles, currentFolder } = useFileManager();
   const [opened, { open, close }] = useDisclosure(false);
 
   // 創建新的檔案/ 資料夾
   const [fileMode, setFileMode] = useState<FileMode>("File");
 
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string | null>(null);
+
+  const createNewInit = () => {
+    setInputValue(null);
+    setFileMode("File");
+  };
+
   //創建新的檔案/ 資料夾
   const createNew = ({
     inputValue,
     fileMode,
   }: {
-    inputValue: string;
+    inputValue: string | null;
     fileMode: FileMode;
   }) => {
     const newFile: FileType = {
       id: Date.now().toString(),
-      name: inputValue,
+      name: inputValue!,
       isDir: fileMode === "Folder",
-      // parentId: currentFolder.id,
+      parentId: currentFolder.id,
       lastModified: Date.now(),
+      path: `${currentFolder.path}/${inputValue}`,
     };
 
     console.log("newFile", newFile);
 
     setFiles((prevFiles) => [...prevFiles, newFile]);
     close(); // 關閉 Modal
+    createNewInit();
   };
 
   return (
@@ -52,7 +60,7 @@ const CreateNew = () => {
 
           <div className="flex justify-center mt-3">
             <TextInput
-              value={inputValue}
+              value={inputValue!}
               onChange={(e) => setInputValue(e.target.value)}
               style={{
                 width: "80%",

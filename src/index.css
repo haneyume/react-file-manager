@@ -108,4 +108,5 @@ button:focus-visible {
   justify-content: center;
   border-radius: 5px;
   cursor: pointer;
+  margin-left: 10px;
 }
