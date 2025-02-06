@@ -8,7 +8,7 @@ const Navbar = () => {
     return files.filter((f) => f.isDir && f.parentId === "0");
   }, [files]);
   return (
-    <div className="w-[30%] bg-[#f9fafc] h-full">
+    <div className="w-[15%] bg-[#f9fafc] h-full">
       <div
         onClick={() => setCurrentFolder(rootFile)}
         className="link"

@@ -110,3 +110,8 @@ button:focus-visible {
   cursor: pointer;
   margin-left: 10px;
 }
+
+.file[data-active] {
+  background-color: #eeeff1;
+  color: #000000;
+}

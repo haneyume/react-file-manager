@@ -22,6 +22,12 @@ const Workspace = () => {
   // 控制右鍵選單的開啟狀態（此處用檔案 id 來控制）
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
 
+  // 右鍵選單的位置
+  const [menuPosition, setMenuPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
   // 儲存目前正在編輯的檔案 id
   const [renameFileId, setRenameFileId] = useState<string | null>(null);
 
@@ -48,8 +54,19 @@ const Workspace = () => {
     e: React.MouseEvent;
     file: FileType;
   }) => {
-    setMenuOpenId(file.id);
     e.preventDefault();
+
+    // 找到點擊的 `div`（這裡用 e.currentTarget 指向被點擊的區塊）
+    const targetElement = e.currentTarget as HTMLElement;
+    const rect = targetElement.getBoundingClientRect();
+
+    // 記錄滑鼠點擊位置
+    setMenuPosition({
+      top: rect.top,
+      left: rect.right + 10,
+    });
+    // 開啟當前的menu
+    setMenuOpenId(file.id);
   };
 
   // 編輯檔案名稱
@@ -102,8 +119,6 @@ const Workspace = () => {
     setFiles(newFiles);
   };
 
-  console.log("currentFolder", currentFolder);
-  console.log("searchText", searchText);
   return (
     <>
       {/* 檔案資訊modal */}
@@ -113,20 +128,15 @@ const Workspace = () => {
         file={selectedFile!}
       />
 
-      <div className="w-[90%] h-full">
+      <div className="w-[85%] h-full">
         <Path searchText={searchText} setSearchText={setSearchText} />
 
         <div className={viewStyle === "grid" ? "flex flex-wrap" : ""}>
           {renderFiles.map((file) => {
             return (
-              <div
-                style={{
-                  border: "1px solid red",
-                }}
-                key={file.id}
-              >
+              <div key={file.id}>
                 <Menu
-                  position="bottom-start"
+                  position="right-start"
                   withArrow
                   key={file.id}
                   arrowPosition="center"
@@ -134,15 +144,13 @@ const Workspace = () => {
                   onClose={() => setMenuOpenId(null)}
                 >
                   <Menu.Target>
-                    <div
-                      className={
-                        viewStyle === "grid"
-                          ? "flex flex-col items-center m-2 cursor-pointer"
-                          : "flex"
-                      }
+                    <a
+                      style={{
+                        width: viewStyle === "list" ? "max-content" : "auto",
+                      }}
+                      className={`${viewStyle === "grid" ? "flex-col" : ""} flex items-center m-2 cursor-pointer relative file`}
                       key={file.id}
                       onClick={() => {
-                        console.log("click", file);
                         if (file.isDir) {
                           setCurrentFolder(file);
                         }
@@ -153,6 +161,9 @@ const Workspace = () => {
                           file,
                         })
                       }
+                      {...(menuOpenId === file.id
+                        ? { "data-active": true }
+                        : {})}
                     >
                       {file.isDir ? (
                         <IconFolderFilled
@@ -191,10 +202,16 @@ const Workspace = () => {
                       ) : (
                         <div>{file.name}</div>
                       )}
-                    </div>
+                    </a>
                   </Menu.Target>
 
-                  <Menu.Dropdown>
+                  <Menu.Dropdown
+                    className="absolute"
+                    style={{
+                      top: menuPosition?.top ?? 0, // 如果 menuPosition 存在則使用該座標
+                      left: menuPosition?.left ?? 0,
+                    }}
+                  >
                     <Menu.Item
                       leftSection={<IconSearch size={14} />}
                       onClick={() => infoEvent(file)}
