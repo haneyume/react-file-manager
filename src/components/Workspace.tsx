@@ -30,6 +30,9 @@ const Workspace = () => {
   //  正在選擇的檔案
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null);
 
+  // 搜尋文字
+  const [searchText, setSearchText] = useState<string>("");
+
   const renderFiles = useMemo(() => {
     return files?.filter(
       (f) => f.id !== "0" && f.parentId === currentFolder.id
@@ -99,7 +102,7 @@ const Workspace = () => {
   };
 
   console.log("currentFolder", currentFolder);
-
+  console.log("searchText", searchText);
   return (
     <>
       {/* 檔案資訊modal */}
@@ -110,7 +113,7 @@ const Workspace = () => {
       />
 
       <div className="w-[90%] h-full">
-        <Path />
+        <Path searchText={searchText} setSearchText={setSearchText} />
 
         <div className="flex">
           {renderFiles.map((file) => {

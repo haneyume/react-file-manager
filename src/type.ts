@@ -4,7 +4,7 @@ type FileType = {
   isDir: boolean;
   parentId?: string;
   lastModified?: number;
-  path?: string;
+  path: string;
 };
 
 type ViewStyle = "list" | "grid";

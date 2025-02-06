@@ -12,6 +12,7 @@ const fs: FileType[] = [
     isDir: false,
     parentId: "0",
     lastModified: 1677021347,
+    path: "/",
   },
   {
     id: "2",
@@ -35,6 +36,7 @@ const fs: FileType[] = [
     isDir: false,
     parentId: "0",
     lastModified: 1679647141,
+    path: "/",
   },
   {
     id: "5",
@@ -50,6 +52,7 @@ const fs: FileType[] = [
     isDir: false,
     parentId: "5",
     lastModified: 1679647141,
+    path: "/Images/logo.png",
   },
 ];
 const FileManager = () => {

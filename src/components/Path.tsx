@@ -3,7 +3,11 @@ import { IconCircleArrowUpFilled, IconSearch } from "@tabler/icons-react";
 import ViewStyle from "./ViewStyle";
 import { useFileManager } from "../context/FileManagerContext";
 
-const Path = () => {
+interface PathProps {
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+}
+const Path: React.FC<PathProps> = ({ searchText, setSearchText }) => {
   const { files, currentFolder, setCurrentFolder } = useFileManager();
 
   // 點擊 返回上一層
@@ -48,7 +52,12 @@ const Path = () => {
         </div>
       </div>
       <div className="flex items-center">
-        <TextInput leftSection={<IconSearch />} placeholder="搜尋" />
+        <TextInput
+          leftSection={<IconSearch />}
+          placeholder="搜尋"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
         {/* 檔案管理顯示模式 */}
         <ViewStyle />
       </div>
