@@ -6,7 +6,7 @@ import { FileMode, FileType } from "../type";
 import { useState } from "react";
 
 const CreateNew = () => {
-  const { setFiles, currentFolder } = useFileManager();
+  const { setFiles, currentFolder, viewStyle } = useFileManager();
   const [opened, { open, close }] = useDisclosure(false);
 
   // 創建新的檔案/ 資料夾
@@ -86,9 +86,15 @@ const CreateNew = () => {
         </div>
       </Modal>
 
-      <div className="createNewIcon" onClick={open}>
-        <IconPlus stroke={2} color="#7a7a7a" />
-      </div>
+      {viewStyle === "grid" ? (
+        <div className="createNewIcon" onClick={open}>
+          <IconPlus stroke={2} color="#7a7a7a" />
+        </div>
+      ) : (
+        <Button variant="filled" color="#4ab7ff" onClick={open}>
+          Create New
+        </Button>
+      )}
     </>
   );
 };

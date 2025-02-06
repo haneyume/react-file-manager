@@ -14,7 +14,8 @@ import CreateNew from "./CreateNew";
 import InfoModal from "./InfoModal";
 
 const Workspace = () => {
-  const { files, setFiles, currentFolder, setCurrentFolder } = useFileManager();
+  const { files, setFiles, currentFolder, setCurrentFolder, viewStyle } =
+    useFileManager();
 
   const [infoOpened, setInfoOpened] = useState(false);
 
@@ -115,10 +116,15 @@ const Workspace = () => {
       <div className="w-[90%] h-full">
         <Path searchText={searchText} setSearchText={setSearchText} />
 
-        <div className="flex">
+        <div className={viewStyle === "grid" ? "flex flex-wrap" : ""}>
           {renderFiles.map((file) => {
             return (
-              <div key={file.id} className="w-[12%]">
+              <div
+                style={{
+                  border: "1px solid red",
+                }}
+                key={file.id}
+              >
                 <Menu
                   position="bottom-start"
                   withArrow
@@ -129,7 +135,11 @@ const Workspace = () => {
                 >
                   <Menu.Target>
                     <div
-                      className="flex flex-col items-center m-2 cursor-pointer"
+                      className={
+                        viewStyle === "grid"
+                          ? "flex flex-col items-center m-2 cursor-pointer"
+                          : "flex"
+                      }
                       key={file.id}
                       onClick={() => {
                         console.log("click", file);
@@ -147,11 +157,14 @@ const Workspace = () => {
                       {file.isDir ? (
                         <IconFolderFilled
                           stroke={2}
-                          size={100}
+                          size={viewStyle === "grid" ? 100 : 30}
                           color="#4ab7ff"
                         />
                       ) : (
-                        <IconFileFilled size={100} color="#fdcd53" />
+                        <IconFileFilled
+                          size={viewStyle === "grid" ? 100 : 30}
+                          color="#fdcd53"
+                        />
                       )}
 
                       {/* 根據是否正在編輯決定要顯示 TextInput 或純文字 */}
