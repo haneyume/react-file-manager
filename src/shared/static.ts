@@ -6,3 +6,16 @@ export const rootFile: FileType = {
   path: "/",
   isDir: true,
 };
+
+export const formattedDate = (lastModified: number) => {
+  const date = new Date(lastModified);
+  return date.toLocaleString("zh-TW", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  });
+};

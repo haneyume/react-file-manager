@@ -1,50 +1,63 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🗂️檔案管理
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
+## 📖 資料結構
 ```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
+const fs = [
+  { id: "0", name: "/", path: "/", isDir: true },
+  {
+    id: "1",
+    name: "report.pdf",
+    isDir: false,
+    parentId: "0",
+    lastModified: 1677021347,
   },
-})
+  {
+    id: "2",
+    name: "Documents",
+    isDir: true,
+    parentId: "0",
+    path: "/Documents",
+    lastModified: 1704720512,
+  },]
 ```
+## ⚙️所有檔案管理功能
+- 切換 亮暗色
+- 檔案管理 顯示模式: 清單、Icon
+- 詳細資訊 資料夾/檔案
+- 新增 資料夾/檔案
+- 重新命名 資料夾/檔案
+- 刪除 資料夾/檔案
+- 複製 資料夾/檔案
+- 剪下 資料夾/檔案
+- 貼上 資料夾/檔案
+- 搜尋 資料夾/檔案
+- 下載 資料夾/檔案
+- 上傳 資料夾/檔案
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+-----
+## ✅目前Ok的功能
+- 詳細資訊 資料夾/檔案
+- 新增 資料夾/檔案
+- 重新命名 資料夾/檔案
+- 刪除 資料夾/檔案
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+-----
+## 🌀還沒做的功能
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- 切換 亮暗色
+- 檔案管理 顯示模式: 清單、Icon
+- 複製 資料夾/檔案
+- 剪下 資料夾/檔案
+- 貼上 資料夾/檔案
+- 搜尋 資料夾/檔案
+- 下載 資料夾/檔案
+- 上傳 資料夾/檔案
+
+
+
+
+
+

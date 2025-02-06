@@ -7,4 +7,6 @@ type FileType = {
   path?: string;
 };
 
-export type { FileType };
+type FileMode = "File" | "Folder";
+
+export type { FileType, FileMode };

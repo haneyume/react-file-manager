@@ -97,3 +97,15 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.createNewIcon {
+  margin-top: 10px;
+  border: 1px dashed #ccc;
+  width: 10%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  cursor: pointer;
+}
