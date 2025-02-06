@@ -7,6 +7,8 @@ type FileType = {
   path?: string;
 };
 
+type ViewStyle = "list" | "grid";
+
 type FileMode = "File" | "Folder";
 
-export type { FileType, FileMode };
+export type { FileType, ViewStyle, FileMode };

@@ -1,9 +1,11 @@
-import { IconCircleArrowUpFilled } from "@tabler/icons-react";
+import { TextInput } from "@mantine/core";
+import { IconCircleArrowUpFilled, IconSearch } from "@tabler/icons-react";
+import ViewStyle from "./ViewStyle";
 
 const Path = () => {
   return (
     <div
-      className="flex w-full justify-between"
+      className="flex items-center w-full justify-between"
       style={{
         border: "1px solid #ccc",
       }}
@@ -15,12 +17,10 @@ const Path = () => {
       >
         <IconCircleArrowUpFilled color="#b1b1b1" />
       </div>
-      <div
-        style={{
-          border: "1px solid #ccc",
-        }}
-      >
-        search
+      <div className="flex items-center">
+        <TextInput leftSection={<IconSearch />} placeholder="搜尋" />
+        {/* 檔案管理顯示模式 */}
+        <ViewStyle />
       </div>
     </div>
   );
