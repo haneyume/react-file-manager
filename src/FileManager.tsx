@@ -2,6 +2,8 @@ import Navbar from "./components/Navbar";
 import FileManagerProvider from "./context/FileManagerContext";
 import Workspace from "./components/Workspace";
 import { FileType } from "./type";
+import { createTheme, MantineProvider } from "@mantine/core";
+
 const fs: FileType[] = [
   { id: "0", name: "/", path: "/", isDir: true },
   {
@@ -51,13 +53,18 @@ const fs: FileType[] = [
   },
 ];
 const FileManager = () => {
+  const theme = createTheme({
+    /** Put your mantine theme override here */
+  });
   return (
-    <FileManagerProvider fs={fs}>
-      <div className="flex h-full">
-        <Navbar />
-        <Workspace />
-      </div>
-    </FileManagerProvider>
+    <MantineProvider theme={theme}>
+      <FileManagerProvider fs={fs}>
+        <div className="flex h-full">
+          <Navbar />
+          <Workspace />
+        </div>
+      </FileManagerProvider>
+    </MantineProvider>
   );
 };
 

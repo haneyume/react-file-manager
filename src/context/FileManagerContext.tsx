@@ -1,11 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import { FileType } from "../type";
+import { rootFile } from "../shared/static";
 
 interface Value {
   files: FileType[];
   setFiles: React.Dispatch<React.SetStateAction<FileType[]>>;
-  currentFolder: string;
-  setCurrentFolder: React.Dispatch<React.SetStateAction<string>>;
+  currentFolder: FileType;
+  setCurrentFolder: React.Dispatch<React.SetStateAction<FileType>>;
 }
 
 interface FileManagerProviderProps {
@@ -16,7 +17,7 @@ interface FileManagerProviderProps {
 const FileManagerContext = createContext<Value>({
   files: [],
   setFiles: () => {},
-  currentFolder: "0",
+  currentFolder: rootFile,
   setCurrentFolder: () => {},
 });
 
@@ -27,7 +28,7 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   children,
 }) => {
   const [files, setFiles] = useState(fs);
-  const [currentFolder, setCurrentFolder] = useState("0");
+  const [currentFolder, setCurrentFolder] = useState<FileType>(rootFile);
 
   const value = {
     files,
