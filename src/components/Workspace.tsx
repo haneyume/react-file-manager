@@ -173,18 +173,19 @@ const Workspace = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.ctrlKey &&
-        (e.key.toLowerCase() === "c" || e.key.toLowerCase() === "x")
-      ) {
+      const isCopy = e.key.toLowerCase() === "c";
+      const isCut = e.key.toLowerCase() === "x";
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey; // 兼容 window 和mac 的快捷鍵
+
+      if (isCtrlOrCmd && (isCopy || isCut)) {
         if (!selectedFile) return; // 沒有選擇檔案的話，不做任何動作
 
-        if (e.ctrlKey && e.key.toLowerCase() === "c") {
+        if (isCopy) {
           copyOrCutEvent({
             file: selectedFile!,
             isCut: false,
           });
-        } else if (e.ctrlKey && e.key.toLowerCase() === "x") {
+        } else if (isCut) {
           setFiles((prevFiles) =>
             prevFiles.filter((f) => f.id !== selectedFile!.id)
           );
@@ -231,9 +232,12 @@ const Workspace = () => {
             }
           }}
           onKeyDown={(e) => {
+            const isCtrlOrCmd = e.ctrlKey || e.metaKey; // 兼容 window 和mac 的快捷鍵
+            const isPaste = e.key.toLowerCase() === "v";
+
             console.log("e", e);
-            // 在任一處按下 ctrl + v
-            if (e.ctrlKey && e.key.toLowerCase() === "v") {
+            //  檔案管理任一處按下 ctrl + v
+            if (isCtrlOrCmd && isPaste) {
               console.log("tempFile", tempFile);
               pasteEvent(tempFile);
             }
