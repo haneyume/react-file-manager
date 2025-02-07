@@ -69,28 +69,6 @@ const Workspace = () => {
     setMenuOpenId(file.id);
   };
 
-  // 編輯檔案名稱
-  const textInputOnChange = ({
-    file,
-    newName,
-  }: {
-    file: FileType;
-    newName: string;
-  }) => {
-    setInputValue(newName);
-    const newFiles = files.map((f) => {
-      if (f.id === file.id) {
-        return {
-          ...f,
-          name: newName,
-        };
-      }
-      return f;
-    });
-
-    setFiles(newFiles);
-  };
-
   // 點擊詳細資訊事件
   const infoEvent = (file: FileType) => {
     setSelectedFile(file);
@@ -108,7 +86,25 @@ const Workspace = () => {
   // 模擬儲存新檔案名稱的動作，這裡可以做 API 請求或直接更新 state
   const saveRename = (file: FileType) => {
     console.log("Saving new name:", inputValue, "for file", file);
-    // 更新檔案名稱的邏輯……
+
+    // 如果 inputValue 為空，則使用原始檔案名稱
+    const newName = !inputValue ? file.name : inputValue;
+    const newFiles = files.map((f) => {
+      if (f.id === file.id) {
+        return {
+          ...f,
+          name: newName,
+          path:
+            currentFolder.id === "0"
+              ? `/${newName}`
+              : `${currentFolder.path}/${newName}`,
+        };
+      }
+      return f;
+    });
+    setFiles(newFiles);
+
+    // 更新檔案名稱的邏輯
     setRenameFileId(null);
   };
 
@@ -184,10 +180,7 @@ const Workspace = () => {
                           size="xs"
                           value={inputValue!}
                           onChange={(event) => {
-                            textInputOnChange({
-                              file,
-                              newName: event.currentTarget.value,
-                            });
+                            setInputValue(event.currentTarget.value);
                           }}
                           // 當 TextInput 失去焦點時保存變更
                           onBlur={() => saveRename(file)}

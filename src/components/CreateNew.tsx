@@ -10,7 +10,7 @@ const CreateNew = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   // 創建新的檔案/ 資料夾
-  const [fileMode, setFileMode] = useState<FileMode>("File");
+  const [fileMode, setFileMode] = useState<FileMode>("Folder");
 
   // TextInput 的內容
   const [inputValue, setInputValue] = useState<string | null>(null);
@@ -20,7 +20,7 @@ const CreateNew = () => {
   const createNewInit = () => {
     setError(false);
     setInputValue(null);
-    setFileMode("File");
+    setFileMode("Folder");
   };
 
   //創建新的檔案/ 資料夾
@@ -65,7 +65,7 @@ const CreateNew = () => {
               style={{
                 width: "50%",
               }}
-              data={["File", "Folder"]}
+              data={["Folder", "File"]}
               value={fileMode}
               onChange={(value) => setFileMode(value as FileMode)}
             />
