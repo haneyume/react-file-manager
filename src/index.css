@@ -112,6 +112,11 @@ button:focus-visible {
 }
 
 .file[data-active] {
-  background-color: #eeeff1;
+  background-color: #ddddddf5;
+  color: #000000;
+}
+
+.file:hover {
+  background-color: #f3f3f3;
   color: #000000;
 }
