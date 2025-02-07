@@ -219,6 +219,8 @@ const Workspace = () => {
     };
   }, [selectedFile]);
 
+  console.log("tempFile", tempFile);
+
   return (
     <>
       {/* 檔案資訊modal */}
@@ -348,12 +350,15 @@ const Workspace = () => {
                     </Menu.Item>
                     <Menu.Item
                       leftSection={<IconCut stroke={1.25} size={18} />}
-                      onClick={() =>
+                      onClick={() => {
+                        setFiles((prevFiles) =>
+                          prevFiles.filter((f) => f.id !== file!.id)
+                        );
                         copyOrCutEvent({
                           file,
                           isCut: true,
-                        })
-                      }
+                        });
+                      }}
                     >
                       剪下
                     </Menu.Item>
