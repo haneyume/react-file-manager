@@ -15,6 +15,7 @@ import { Menu, TextInput } from "@mantine/core";
 import { FileType } from "../type";
 import CreateNew from "./CreateNew";
 import InfoModal from "./InfoModal";
+import { getNewPath } from "../shared/static";
 
 type TempFile = FileType & {
   isCut: boolean;
@@ -101,9 +102,6 @@ const Workspace = () => {
 
   // 模擬儲存新檔案名稱的動作，這裡可以做 API 請求或直接更新 state
   const saveRename = (file: FileType) => {
-    console.log("currentFolder", currentFolder);
-    console.log("Saving new name:", inputValue, "for file", file);
-
     // 如果 inputValue 為空，則使用原始檔案名稱
     const newName = !inputValue ? file.name : inputValue;
     const newFiles = files.map((f) => {
@@ -145,30 +143,46 @@ const Workspace = () => {
     const id = isCut ? file.id : Date.now().toString();
     const newName = isCut ? file.name : file.name + "-複製";
 
+    const newPath = getNewPath({
+      currentFolder,
+      file,
+      fileName: newName,
+    });
     const newFile = {
       ...file,
       id: id,
       name: newName,
       parentId: currentFolder.id,
-
-      path: file.isDir
-        ? currentFolder.id === "0"
-          ? `/${newName}`
-          : `${currentFolder.path}/${newName}`
-        : currentFolder.path,
+      path: newPath,
     };
 
-    console.log("newFile", newFile);
+    console.log("newFile cut ", newFile);
     setTempFile({ ...newFile, isCut });
   };
 
-  console.log("tempFile", tempFile);
+  console.log("currentFolder", currentFolder);
 
   // 貼上事件
   const pasteEvent = (tempFile: TempFile) => {
-    console.log("pasteEvent tempFile", tempFile);
     if (!tempFile) return;
-    setFiles((prevFiles) => [...prevFiles, tempFile]);
+
+    const isCut = tempFile.isCut;
+    const isSameFolder = tempFile.parentId === currentFolder.id;
+    let newFile = tempFile;
+
+    // 如果是剪下且不在相同資料夾, 要更新 parentId、path
+    if (isCut && !isSameFolder) {
+      newFile = {
+        ...tempFile,
+        parentId: currentFolder.id,
+        path: getNewPath({
+          currentFolder,
+          file: tempFile,
+          fileName: tempFile.name,
+        }),
+      };
+    }
+    setFiles((prevFiles) => [...prevFiles, newFile]);
   };
 
   useEffect(() => {

@@ -19,3 +19,21 @@ export const formattedDate = (lastModified: number) => {
     hour12: true,
   });
 };
+
+export const getNewPath = ({
+  currentFolder,
+  file,
+  fileName,
+}: {
+  currentFolder: FileType;
+  file: FileType;
+  fileName: string;
+}) => {
+  const path = file.isDir
+    ? currentFolder.id === "0"
+      ? `/${fileName}`
+      : `${currentFolder.path}/${fileName}`
+    : currentFolder.path;
+
+  return path;
+};
