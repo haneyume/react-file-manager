@@ -3,7 +3,7 @@ import {
   IconFileFilled,
   IconEdit,
   IconTrash,
-  IconSearch,
+  IconInfoCircle,
 } from "@tabler/icons-react";
 import { useFileManager } from "../context/FileManagerContext";
 import Path from "./Path";
@@ -213,19 +213,19 @@ const Workspace = () => {
                     }}
                   >
                     <Menu.Item
-                      leftSection={<IconSearch size={14} />}
+                      leftSection={<IconInfoCircle stroke={1.25} size={18} />}
                       onClick={() => infoEvent(file)}
                     >
                       詳細資訊
                     </Menu.Item>
                     <Menu.Item
-                      leftSection={<IconEdit size={14} />}
+                      leftSection={<IconEdit stroke={1.25} size={18} />}
                       onClick={() => reNameEvent(file)}
                     >
                       重新命名
                     </Menu.Item>
                     <Menu.Item
-                      leftSection={<IconTrash size={14} />}
+                      leftSection={<IconTrash stroke={1.25} size={18} />}
                       color="red"
                       onClick={() => deleteEvent(file.id)}
                     >

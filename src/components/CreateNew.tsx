@@ -12,9 +12,13 @@ const CreateNew = () => {
   // 創建新的檔案/ 資料夾
   const [fileMode, setFileMode] = useState<FileMode>("File");
 
+  // TextInput 的內容
   const [inputValue, setInputValue] = useState<string | null>(null);
 
+  const [error, setError] = useState(false);
+
   const createNewInit = () => {
+    setError(false);
     setInputValue(null);
     setFileMode("File");
   };
@@ -27,13 +31,22 @@ const CreateNew = () => {
     inputValue: string | null;
     fileMode: FileMode;
   }) => {
+    if (!inputValue) {
+      setError(true);
+      return;
+    }
+
+    console.log("currentFolder", currentFolder);
     const newFile: FileType = {
       id: Date.now().toString(),
       name: inputValue!,
       isDir: fileMode === "Folder",
       parentId: currentFolder.id,
       lastModified: Date.now(),
-      path: `${currentFolder.path}/${inputValue}`,
+      path:
+        currentFolder.id === "0"
+          ? `/${inputValue}`
+          : `${currentFolder.path}/${inputValue}`,
     };
 
     console.log("newFile", newFile);
@@ -60,12 +73,26 @@ const CreateNew = () => {
 
           <div className="flex justify-center mt-3">
             <TextInput
+              // required
               value={inputValue!}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                setError(false);
+              }}
               style={{
                 width: "80%",
               }}
               placeholder="Name"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  createNew({
+                    inputValue,
+                    fileMode,
+                  });
+                }
+              }}
+              autoFocus
+              error={error && "必填欄位"}
             />
           </div>
 
