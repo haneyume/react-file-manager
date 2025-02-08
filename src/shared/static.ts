@@ -22,18 +22,23 @@ export const formattedDate = (lastModified: number) => {
 
 export const getNewPath = ({
   currentFolder,
-  file,
+  isDir,
   fileName,
 }: {
   currentFolder: FileType;
-  file: FileType;
+  isDir: boolean;
   fileName: string;
 }) => {
-  const path = file.isDir
+  const path = isDir
     ? currentFolder.id === "0"
       ? `/${fileName}`
       : `${currentFolder.path}/${fileName}`
     : currentFolder.path;
 
   return path;
+};
+
+export const categoryTitle = {
+  product: "製品",
+  sorting: "排版",
 };

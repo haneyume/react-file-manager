@@ -1,6 +1,4 @@
 import {
-  IconFolderFilled,
-  IconFileFilled,
   IconEdit,
   IconTrash,
   IconInfoCircle,
@@ -16,6 +14,7 @@ import { FileType } from "../type";
 import CreateNew from "./CreateNew";
 import InfoModal from "./InfoModal";
 import { getNewPath } from "../shared/static";
+import { GetFileIcon } from "../shared/GetFileIcon";
 
 type TempFile = FileType & {
   isCut: boolean;
@@ -145,7 +144,7 @@ const Workspace = () => {
 
     const newPath = getNewPath({
       currentFolder,
-      file,
+      isDir: file.isDir,
       fileName: newName,
     });
     const newFile = {
@@ -177,7 +176,7 @@ const Workspace = () => {
         parentId: currentFolder.id,
         path: getNewPath({
           currentFolder,
-          file: tempFile,
+          isDir: tempFile.isDir,
           fileName: tempFile.name,
         }),
       };
@@ -298,18 +297,10 @@ const Workspace = () => {
                         ? { "data-active": true }
                         : {})}
                     >
-                      {file.isDir ? (
-                        <IconFolderFilled
-                          stroke={2}
-                          size={viewStyle === "grid" ? 100 : 30}
-                          color="#4ab7ff"
-                        />
-                      ) : (
-                        <IconFileFilled
-                          size={viewStyle === "grid" ? 100 : 30}
-                          color="#fdcd53"
-                        />
-                      )}
+                      {GetFileIcon({
+                        file,
+                        viewStyle,
+                      })}
 
                       {/* 根據是否正在編輯決定要顯示 TextInput 或純文字 */}
                       {renameFileId === file.id ? (
