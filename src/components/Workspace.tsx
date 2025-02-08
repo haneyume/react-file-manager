@@ -165,12 +165,11 @@ const Workspace = () => {
   const pasteEvent = (tempFile: TempFile) => {
     if (!tempFile) return;
 
-    const isCut = tempFile.isCut;
     const isSameFolder = tempFile.parentId === currentFolder.id;
     let newFile = tempFile;
 
-    // 如果是剪下且不在相同資料夾, 要更新 parentId、path
-    if (isCut && !isSameFolder) {
+    // 如果不在相同資料夾, 要更新 parentId、path
+    if (!isSameFolder) {
       newFile = {
         ...tempFile,
         parentId: currentFolder.id,
@@ -218,7 +217,7 @@ const Workspace = () => {
     };
   }, [selectedFile]);
 
-  console.log("tempFile", tempFile);
+  console.log("files", files);
 
   return (
     <>
