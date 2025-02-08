@@ -14,4 +14,8 @@ type FileMode = "File" | "Folder";
 
 type Category = "product" | "sorting";
 
-export type { FileType, ViewStyle, FileMode, Category };
+type TempFile = FileType & {
+  isCut: boolean;
+};
+
+export type { FileType, ViewStyle, FileMode, Category, TempFile };
