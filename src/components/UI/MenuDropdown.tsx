@@ -20,6 +20,7 @@ const MenuDropdown = ({ file }: { file: FileType }) => {
     reNameEvent,
     deleteEvent,
     menuPosition,
+    pasteEvent,
   } = useFileManager();
   return (
     <Menu.Dropdown
@@ -61,7 +62,7 @@ const MenuDropdown = ({ file }: { file: FileType }) => {
 
       <Menu.Item
         leftSection={<IconClipboard stroke={1.25} size={18} />}
-        onClick={() => infoEvent(file)}
+        onClick={() => pasteEvent(tempFile!)}
         disabled={!tempFile}
       >
         貼上

@@ -25,8 +25,10 @@ interface Value {
     e: React.MouseEvent;
     file: FileType;
   }) => void;
-  infoOpened: boolean;
-  setInfoOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  createNewModalOpened: boolean;
+  setCreateNewModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  infoModalOpened: boolean;
+  setInfoModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
   menuOpenId: string | null;
   setMenuOpenId: React.Dispatch<React.SetStateAction<string | null>>;
   menuPosition: { top: number; left: number } | null;
@@ -62,8 +64,10 @@ const FileManagerContext = createContext<Value>({
   infoEvent: () => {}, // 點擊詳細資訊事件
   pasteEvent: () => {}, // 貼上事件
   clickRightEvent: () => {}, // 點擊滑鼠右鍵時事件
-  infoOpened: false, // 詳細資訊的modal開啟狀態
-  setInfoOpened: () => {}, // 設定詳細資訊的modal開啟狀態
+  createNewModalOpened: false, //建立新的(檔案/資料夾)modal開啟狀態
+  setCreateNewModalOpened: () => {}, // 設定建立新的(檔案/資料夾)modal開啟狀態
+  infoModalOpened: false, // 詳細資訊的modal開啟狀態
+  setInfoModalOpened: () => {}, // 設定詳細資訊的modal開啟狀態
   menuOpenId: null, // 控制右鍵選單的開啟狀態
   setMenuOpenId: () => {}, // 設定右鍵選單的開啟狀態
   menuPosition: null, // 右鍵選單的位置
@@ -93,10 +97,13 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null);
 
   // 暫存(複製/貼上)的檔案
-  const [tempFile, setTempFile] = useState<TempFile | null>();
+  const [tempFile, setTempFile] = useState<TempFile | null>(null);
+
+  // 建立新的(檔案/資料夾)modal開啟狀態
+  const [createNewModalOpened, setCreateNewModalOpened] = useState(false);
 
   // 詳細資訊的modal開啟狀態
-  const [infoOpened, setInfoOpened] = useState(false);
+  const [infoModalOpened, setInfoModalOpened] = useState(false);
 
   // 控制右鍵選單的開啟狀態（此處用檔案 id 來控制）
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
@@ -201,7 +208,7 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   // 點擊 詳細資訊事件
   const infoEvent = (file: FileType) => {
     setSelectedFile(file);
-    setInfoOpened(true); // 打開 詳細資訊modal
+    setInfoModalOpened(true); // 打開 詳細資訊modal
     setMenuOpenId(null); // 關閉右鍵選單, 但不影響 詳細資訊modal
   };
   // 點擊 刪除事件
@@ -249,8 +256,10 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     infoEvent,
     pasteEvent,
     clickRightEvent,
-    infoOpened,
-    setInfoOpened,
+    createNewModalOpened,
+    setCreateNewModalOpened,
+    infoModalOpened,
+    setInfoModalOpened,
     menuOpenId,
     setMenuOpenId,
     menuPosition,

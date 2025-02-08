@@ -24,7 +24,7 @@ const Workspace = () => {
   const { files, setFiles, currentFolder, setCurrentFolder, viewStyle } =
     useFileManager();
 
-  const [infoOpened, setInfoOpened] = useState(false);
+  const [infoModalOpened, setInfoModalOpened] = useState(false);
 
   // 控制右鍵選單的開啟狀態（此處用檔案 id 來控制）
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
@@ -88,7 +88,7 @@ const Workspace = () => {
   // 點擊詳細資訊事件
   const infoEvent = (file: FileType) => {
     setSelectedFile(file);
-    setInfoOpened(true); // 打開 詳細資訊modal
+    setInfoModalOpened(true); // 打開 詳細資訊modal
     setMenuOpenId(null); // 關閉右鍵選單, 但不影響 詳細資訊modal
   };
 
@@ -223,8 +223,8 @@ const Workspace = () => {
     <>
       {/* 檔案資訊modal */}
       <InfoModal
-        opened={infoOpened}
-        close={() => setInfoOpened(false)}
+        opened={infoModalOpened}
+        close={() => setInfoModalOpened(false)}
         file={selectedFile!}
       />
 

@@ -5,7 +5,6 @@ import {
   TextInput,
   Text,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import { useFileManager } from "../context/FileManagerContext";
 import { Category, FileMode, FileType } from "../type";
@@ -13,8 +12,13 @@ import { useState } from "react";
 import { categoryTitle, getNewPath } from "../shared/static";
 
 const CreateNew = () => {
-  const { setFiles, currentFolder, viewStyle } = useFileManager();
-  const [opened, { open, close }] = useDisclosure(false);
+  const {
+    setFiles,
+    currentFolder,
+    viewStyle,
+    createNewModalOpened,
+    setCreateNewModalOpened,
+  } = useFileManager();
 
   // 創建新的檔案/ 資料夾
   const [fileMode, setFileMode] = useState<FileMode>("Folder");
@@ -70,13 +74,23 @@ const CreateNew = () => {
     };
 
     setFiles((prevFiles) => [...prevFiles, newFile]);
-    close(); // 關閉 Modal
+    modalOnClose(); // 關閉 Modal
+  };
+  const modalOnOpen = () => {
+    setCreateNewModalOpened(true);
+  };
+  const modalOnClose = () => {
+    setCreateNewModalOpened(false);
     createNewInit();
   };
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Create New">
+      <Modal
+        opened={createNewModalOpened}
+        onClose={modalOnClose}
+        title="Create New"
+      >
         <div className="flex flex-col">
           <div className="flex justify-center">
             <SegmentedControl
@@ -147,12 +161,18 @@ const CreateNew = () => {
       </Modal>
 
       {viewStyle === "grid" ? (
-        <div className="createNewIcon" onClick={open}>
+        <div id="createNewIcon" className="createNewIcon" onClick={modalOnOpen}>
           <IconPlus stroke={2} color="#7a7a7a" />
         </div>
       ) : (
-        <Button variant="filled" color="#4ab7ff" onClick={open}>
-          Create New
+        <Button
+          id="createNewIcon"
+          variant="filled"
+          color="#4ab7ff"
+          onClick={modalOnOpen}
+        >
+          <IconPlus stroke={1.25} />
+          &ensp;Create New
         </Button>
       )}
     </>
