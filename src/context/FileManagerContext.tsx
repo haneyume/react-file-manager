@@ -84,6 +84,7 @@ export const useFileManager = () => useContext(FileManagerContext);
 const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   fs,
   children,
+  getTest,
 }) => {
   // 所有檔案
   const [files, setFiles] = useState(fs);
@@ -169,6 +170,12 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
         }),
       };
     }
+
+    getTest({
+      type: "paste",
+      file: newFile,
+      allFiles: files,
+    });
     setFiles((prevFiles) => [...prevFiles, newFile]);
   };
 
@@ -238,6 +245,8 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     // 更新檔案名稱的邏輯
     setRenameFileId(null);
   };
+
+  console.log("tempFile", tempFile);
 
   const value = {
     files,
