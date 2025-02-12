@@ -14,7 +14,7 @@ interface FileManagerProps {
     newTarget,
   }: {
     type: TargetEvent;
-    originTarget: FileType;
+    originTarget: FileType | null;
     newTarget: FileType;
   }) => void;
 }

@@ -46,6 +46,15 @@ interface Value {
   renameValue: string | null;
   setRenameValue: React.Dispatch<React.SetStateAction<string | null>>;
   saveRename: (file: FileType) => void;
+  getTargetEvent: ({
+    type,
+    originTarget,
+    newTarget,
+  }: {
+    type: TargetEvent;
+    originTarget: FileType | null;
+    newTarget: FileType;
+  }) => void; // 取得正在操作的檔案/資料夾的事件( 複製貼上/剪下貼上/新增/刪除/重命名)
 }
 
 interface FileManagerProviderProps {
@@ -57,7 +66,7 @@ interface FileManagerProviderProps {
     newTarget,
   }: {
     type: TargetEvent;
-    originTarget: FileType;
+    originTarget: FileType | null;
     newTarget: FileType;
   }) => void; // 取得正在操作的檔案/資料夾的事件( 複製貼上/剪下貼上/新增/刪除/重命名)
   children: React.ReactNode;
@@ -93,6 +102,7 @@ const FileManagerContext = createContext<Value>({
   renameValue: null, // 目前 正在重新命名 的內容
   setRenameValue: () => {}, // 設定目前 正在重新命名 的內容
   saveRename: () => {}, // 模擬儲存新檔案名稱的動作
+  getTargetEvent: () => {}, // 取得正在操作的檔案/資料夾的事件( 複製貼上/剪下貼上/新增/刪除/重命名)
 });
 
 export const useFileManager = () => useContext(FileManagerContext);
@@ -251,8 +261,19 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   };
   // 點擊 刪除事件
   const deleteEvent = (fileId: string) => {
+    const deleteFile = files.find((f) => f.id === fileId);
+
     const newFiles = files.filter((f) => f.id !== fileId);
+
     setFiles(newFiles);
+
+    if (deleteFile) {
+      getTargetEvent({
+        type: "delete",
+        originTarget: null,
+        newTarget: deleteFile,
+      });
+    }
   };
   // 模擬儲存新檔案名稱的動作，這裡可以做 API 請求或直接更新 state
   const saveRename = (file: FileType) => {
@@ -307,6 +328,7 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     renameValue,
     setRenameValue,
     saveRename,
+    getTargetEvent,
   };
   return (
     <FileManagerContext.Provider value={value}>
