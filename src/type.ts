@@ -14,8 +14,17 @@ type FileMode = "File" | "Folder";
 
 type Category = "product" | "sorting";
 
-type TempFile = FileType & {
+type TempTarget = FileType & {
   isCut: boolean;
 };
 
-export type { FileType, ViewStyle, FileMode, Category, TempFile };
+type TargetEvent = "copyPaste" | "cutPaste" | "new" | "delete" | "rename";
+
+export type {
+  FileType,
+  ViewStyle,
+  FileMode,
+  Category,
+  TempTarget,
+  TargetEvent,
+};

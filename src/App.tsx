@@ -5,7 +5,7 @@ const fs: FileType[] = [
   { id: "0", name: "/", path: "/", isDir: true },
   {
     id: "1",
-    name: "123.製品",
+    name: "123",
     isDir: false,
     parentId: "0",
     lastModified: 1677021347,
@@ -30,7 +30,7 @@ const fs: FileType[] = [
   },
   {
     id: "4",
-    name: "456.排版",
+    name: "456",
     isDir: false,
     parentId: "0",
     lastModified: 1679647141,
@@ -47,7 +47,7 @@ const fs: FileType[] = [
   },
   {
     id: "6",
-    name: "全聯.製品",
+    name: "全聯",
     isDir: false,
     parentId: "5",
     lastModified: 1679647141,
@@ -56,7 +56,17 @@ const fs: FileType[] = [
   },
 ];
 function App() {
-  return <FileManager fs={fs} getTest={(v) => console.log("app ", v)} />;
+  return (
+    <FileManager
+      fs={fs}
+      getOpenFile={(v) => {
+        console.log("getOpenFile", v);
+      }}
+      getTargetEvent={(v) => {
+        console.log("getTargetEvent", v);
+      }}
+    />
+  );
 }
 
 export default App;

@@ -1,8 +1,8 @@
-import React from "react";
 import { useFileManager } from "../../context/FileManagerContext";
 import { GetFileIcon } from "../../shared/GetFileIcon";
 import { FileType } from "../../type";
-import { TextInput } from "@mantine/core";
+import { TextInput, Text } from "@mantine/core";
+import { categoryTitle } from "../../shared/static";
 
 // file、folder item
 const TargetItem = ({ file }: { file: FileType }) => {
@@ -51,24 +51,37 @@ const TargetItem = ({ file }: { file: FileType }) => {
 
       {/* 根據是否正在編輯決定要顯示 TextInput 或純文字 */}
       {renameFileId === file.id ? (
-        <TextInput
-          size="xs"
-          value={renameValue!}
-          onChange={(event) => {
-            setRenameValue(event.currentTarget.value);
-          }}
-          // 當 TextInput 失去焦點時保存變更 檔案名稱
-          onBlur={() => saveRename(file)}
-          // 當按下 Enter 鍵時也儲存變更 檔案名稱
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              saveRename(file);
-            }
-          }}
-          autoFocus
-        />
+        <>
+          <TextInput
+            size="xs"
+            value={renameValue!}
+            onChange={(event) => {
+              setRenameValue(event.currentTarget.value);
+            }}
+            // 當 TextInput 失去焦點時保存變更 檔案名稱
+            onBlur={() => saveRename(file)}
+            // 當按下 Enter 鍵時也儲存變更 檔案名稱
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                saveRename(file);
+              }
+            }}
+            autoFocus
+          />
+          {!file.isDir && (
+            <Text
+              fw={700}
+              c="#7a7a7a"
+            >{`.${categoryTitle[file.category!]}`}</Text>
+          )}
+        </>
       ) : (
-        <div>{file.name}</div>
+        <div>
+          {" "}
+          {file.isDir
+            ? file.name
+            : `${file.name}.${categoryTitle[file.category!]}`}
+        </div>
       )}
     </a>
   );

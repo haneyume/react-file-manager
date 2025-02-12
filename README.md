@@ -31,12 +31,15 @@ https://youtu.be/qUI3NAs39mo
 如果 isDir=false ,category 則為必填</br>
 category: 'product' | 'sorting'
 
+💡<b> 檔案名呈現: 123.製品 ( 所以 name 不用包含製品、排版的字樣 )</br>
+💡<b> 資料夾名呈現: 所有的排版專案
+
 ```js
 const fs = [
   { id: "0", name: "/", path: "/", isDir: true },
   {
     id: "1",
-    name: "123.製品",
+    name: "123",
     isDir: false,
     parentId: "0",
     lastModified: 1677021347,

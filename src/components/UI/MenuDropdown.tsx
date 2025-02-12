@@ -14,7 +14,7 @@ import { FileType } from "../../type";
 const MenuDropdown = ({ file }: { file: FileType }) => {
   const {
     setFiles,
-    tempFile,
+    tempTarget,
     copyOrCutEvent,
     infoEvent,
     reNameEvent,
@@ -41,7 +41,7 @@ const MenuDropdown = ({ file }: { file: FileType }) => {
         onClick={() => {
           setFiles((prevFiles) => prevFiles.filter((f) => f.id !== file!.id));
           copyOrCutEvent({
-            file,
+            originTarget: file,
             isCut: true,
           });
         }}
@@ -52,7 +52,7 @@ const MenuDropdown = ({ file }: { file: FileType }) => {
         leftSection={<IconCopy stroke={1.25} size={18} />}
         onClick={() =>
           copyOrCutEvent({
-            file,
+            originTarget: file,
             isCut: false,
           })
         }
@@ -62,8 +62,8 @@ const MenuDropdown = ({ file }: { file: FileType }) => {
 
       <Menu.Item
         leftSection={<IconClipboard stroke={1.25} size={18} />}
-        onClick={() => pasteEvent(tempFile!)}
-        disabled={!tempFile}
+        onClick={() => pasteEvent(tempTarget!)}
+        disabled={!tempTarget}
       >
         貼上
       </Menu.Item>
