@@ -52,21 +52,16 @@ const CreateNew = () => {
       return;
     }
 
-    const newName =
-      fileMode === "File"
-        ? `${inputValue}.${categoryTitle[fileCategory!]}`
-        : inputValue;
-
     const category = fileMode === "File" ? fileCategory : null;
 
     const newPath = getNewPath({
       currentFolder,
       isDir: fileMode === "Folder",
-      fileName: newName,
+      fileName: inputValue,
     });
     const newFile: FileType = {
       id: Date.now().toString(),
-      name: newName,
+      name: inputValue,
       isDir: fileMode === "Folder",
       parentId: currentFolder.id,
       lastModified: Date.now(),
@@ -87,7 +82,7 @@ const CreateNew = () => {
   const modalOnOpen = () => {
     setCreateNewModalOpened(true);
   };
-  
+
   const modalOnClose = () => {
     setCreateNewModalOpened(false);
     createNewInit();

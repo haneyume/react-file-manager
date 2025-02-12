@@ -54,6 +54,30 @@ const fs: FileType[] = [
     path: "/所有製品專案",
     category: "product",
   },
+  {
+    id: "7",
+    name: "1111Root",
+    isDir: true,
+    parentId: "0",
+    path: "/1111Root",
+    lastModified: 1679647141,
+  },
+  {
+    id: "8",
+    name: "1111製品",
+    isDir: true,
+    parentId: "5",
+    path: "/1111製品",
+    lastModified: 1679647141,
+  },
+  {
+    id: "9",
+    name: "1111排版",
+    isDir: true,
+    parentId: "2",
+    path: "/1111排版",
+    lastModified: 1679647141,
+  },
 ];
 function App() {
   return (

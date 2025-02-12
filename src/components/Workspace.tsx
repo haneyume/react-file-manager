@@ -26,9 +26,6 @@ const Workspace = () => {
     setCreateNewModalOpened,
   } = useFileManager();
 
-  // 搜尋文字
-  const [searchText, setSearchText] = useState<string>("");
-
   // 任一處menu 的開啟狀態
   const [anyWhereMenuOpened, setAnyWhereMenuOpened] = useState(false);
 
@@ -104,7 +101,7 @@ const Workspace = () => {
       />
 
       <div className="w-[85%] h-full">
-        <Path searchText={searchText} setSearchText={setSearchText} />
+        <Path />
 
         <div
           className={`${viewStyle === "grid" ? "flex flex-wrap" : ""} h-full`}

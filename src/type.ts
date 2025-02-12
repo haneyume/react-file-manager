@@ -20,6 +20,8 @@ type TempTarget = FileType & {
 
 type TargetEvent = "copyPaste" | "cutPaste" | "new" | "delete" | "rename";
 
+type SearchMode = "Local" | "Global";
+
 export type {
   FileType,
   ViewStyle,
@@ -27,4 +29,5 @@ export type {
   Category,
   TempTarget,
   TargetEvent,
+  SearchMode,
 };
