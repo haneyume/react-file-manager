@@ -67,7 +67,7 @@ const fs: FileType[] = [
     name: "1111製品",
     isDir: true,
     parentId: "5",
-    path: "/1111製品",
+    path: "/所有製品專案/1111製品",
     lastModified: 1679647141,
   },
   {
@@ -75,7 +75,7 @@ const fs: FileType[] = [
     name: "1111排版",
     isDir: true,
     parentId: "2",
-    path: "/1111排版",
+    path: "/所有的排版專案/1111排版",
     lastModified: 1679647141,
   },
 ];
