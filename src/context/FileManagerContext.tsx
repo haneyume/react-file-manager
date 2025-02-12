@@ -54,12 +54,13 @@ interface Value {
     type: TargetEvent;
     originTarget: FileType | null;
     newTarget: FileType;
-  }) => void; // 取得正在操作的檔案/資料夾的事件( 複製貼上/剪下貼上/新增/刪除/重命名)
+  }) => void;
+  getOpenFile: (file: FileType) => void;
 }
 
 interface FileManagerProviderProps {
   fs: FileType[]; //初始化檔案資料(必須要包含根目錄 id:0)
-  getOpenFile: ({ file }: { file: FileType }) => void; // 點兩下打開檔案的事件
+  getOpenFile: (file: FileType) => void; // 點兩下打開檔案的事件
   getTargetEvent: ({
     type,
     originTarget,
@@ -103,6 +104,7 @@ const FileManagerContext = createContext<Value>({
   setRenameValue: () => {}, // 設定目前 正在重新命名 的內容
   saveRename: () => {}, // 模擬儲存新檔案名稱的動作
   getTargetEvent: () => {}, // 取得正在操作的檔案/資料夾的事件( 複製貼上/剪下貼上/新增/刪除/重命名)
+  getOpenFile: () => {}, // 點兩下打開檔案的事件
 });
 
 export const useFileManager = () => useContext(FileManagerContext);
@@ -341,6 +343,7 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     setRenameValue,
     saveRename,
     getTargetEvent,
+    getOpenFile,
   };
   return (
     <FileManagerContext.Provider value={value}>

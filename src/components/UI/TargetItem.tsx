@@ -16,6 +16,7 @@ const TargetItem = ({ file }: { file: FileType }) => {
     renameFileId,
     setRenameValue,
     saveRename,
+    getOpenFile,
   } = useFileManager();
 
   return (
@@ -29,10 +30,12 @@ const TargetItem = ({ file }: { file: FileType }) => {
       onClick={() => {
         setSelectedFile(file);
       }}
-      // 雙擊進入資料夾
+      // 雙擊進入(資料夾或開啟檔案)
       onDoubleClick={() => {
         if (file.isDir) {
           setCurrentFolder(file);
+        } else {
+          getOpenFile(file);
         }
       }}
       // 點右鍵顯示右鍵選單

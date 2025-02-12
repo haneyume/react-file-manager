@@ -7,7 +7,7 @@ import { createTheme, MantineProvider } from "@mantine/core";
 
 interface FileManagerProps {
   fs: FileType[];
-  getOpenFile: ({ file }: { file: FileType }) => void;
+  getOpenFile: (file: FileType) => void;
   getTargetEvent: ({
     type,
     originTarget,
