@@ -294,6 +294,18 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     });
     setFiles(newFiles);
 
+    getTargetEvent({
+      type: "rename",
+      originTarget: {
+        ...file,
+        name: file.name,
+      },
+      newTarget: {
+        ...file,
+        name: renameValue!,
+      },
+    });
+
     // 更新檔案名稱的邏輯
     setRenameFileId(null);
   };
