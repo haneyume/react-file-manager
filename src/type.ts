@@ -22,6 +22,12 @@ type TargetEvent = "copyPaste" | "cutPaste" | "new" | "delete" | "rename";
 
 type SearchMode = "Local" | "Global";
 
+type Folder = FileType & {
+  label: string;
+  value: string;
+  children: Folder[];
+};
+
 export type {
   FileType,
   ViewStyle,
@@ -30,4 +36,5 @@ export type {
   TempTarget,
   TargetEvent,
   SearchMode,
+  Folder,
 };
