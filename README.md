@@ -9,19 +9,59 @@
 [![影片標題](<截圖 2025-02-08 上午10.37.30.png>)](https://www.youtube.com/watch?v=影片ID)
 https://youtu.be/qUI3NAs39mo
 
+## ⭐️左側資料夾呈現方式
+### 🌠以Tree的結構呈現
+![alt text](image-13.png)
+
+### 🌠點選資料夾會跳轉到該資料夾底下,並HightLight 該資料夾
+![alt text](image-15.png)
 
 
-## ⭐️檔案管理以清單呈現
-![alt text](<截圖 2025-02-08 上午10.36.50.png>)
+## ⭐️檔案管理UI呈現
 
-## ⭐️檔案管理以圖示呈現
-![alt text](<截圖 2025-02-08 上午10.37.30.png>)
+### 🌠以清單呈現
+![alt text](image-2.png)
+
+### 🌠以圖示呈現
+![alt text](image-3.png)
+
 
 ## ⭐️建立新的資料夾/檔案
-![alt text](<截圖 2025-02-08 上午10.38.10.png>)
 
-## ⭐️建立檔案選擇檔案類型
-![alt text](<截圖 2025-02-08 上午10.38.21.png>)
+
+### 🌠資料夾
+![alt text](image-4.png)
+
+### 🌠檔案, 並選擇專案類型(製品、排版)
+![alt text](image-5.png)
+
+
+
+## ⭐️右鍵的功能選單
+![alt text](image-6.png)
+
+
+## ⭐️搜尋資料夾/檔案功能, 可選擇 Local、Global
+### 🌠選擇 Local
+![alt text](image-9.png)
+### 🌠選擇 Global
+![alt text](image-10.png)
+
+
+
+## ⭐️點選 搜尋資料夾/檔案的下拉選單
+
+### 🌠點選 資料夾, 則會跳轉到該資料夾底下
+![alt text](image-12.png)
+
+
+### 🌠點選 檔案, 該檔案會被HightLight
+![alt text](image-11.png)
+
+
+
+
+
 
 
 
