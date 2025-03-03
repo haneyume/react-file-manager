@@ -18,6 +18,7 @@ const CreateNew = () => {
     viewStyle,
     createNewModalOpened,
     setCreateNewModalOpened,
+    getTargetEvent,
   } = useFileManager();
 
   // 創建新的檔案/ 資料夾
@@ -38,8 +39,8 @@ const CreateNew = () => {
     setFileCategory("product");
   };
 
-  //創建新的檔案/ 資料夾
-  const createNew = ({
+  //創建新的(檔案/ 資料夾)事件
+  const createNewEvent = ({
     inputValue,
     fileMode,
   }: {
@@ -51,21 +52,16 @@ const CreateNew = () => {
       return;
     }
 
-    const newName =
-      fileMode === "File"
-        ? `${inputValue}.${categoryTitle[fileCategory!]}`
-        : inputValue;
-
     const category = fileMode === "File" ? fileCategory : null;
 
     const newPath = getNewPath({
       currentFolder,
       isDir: fileMode === "Folder",
-      fileName: newName,
+      fileName: inputValue,
     });
     const newFile: FileType = {
       id: Date.now().toString(),
-      name: newName,
+      name: inputValue,
       isDir: fileMode === "Folder",
       parentId: currentFolder.id,
       lastModified: Date.now(),
@@ -73,12 +69,20 @@ const CreateNew = () => {
       category: category,
     };
 
+    getTargetEvent({
+      type: "new",
+      originTarget: null,
+      newTarget: newFile,
+    });
+
     setFiles((prevFiles) => [...prevFiles, newFile]);
     modalOnClose(); // 關閉 Modal
   };
+
   const modalOnOpen = () => {
     setCreateNewModalOpened(true);
   };
+
   const modalOnClose = () => {
     setCreateNewModalOpened(false);
     createNewInit();
@@ -126,7 +130,7 @@ const CreateNew = () => {
               placeholder="Name"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  createNew({
+                  createNewEvent({
                     inputValue,
                     fileMode,
                   });
@@ -148,7 +152,7 @@ const CreateNew = () => {
               variant="filled"
               color="#4ab7ff"
               onClick={() =>
-                createNew({
+                createNewEvent({
                   inputValue,
                   fileMode,
                 })

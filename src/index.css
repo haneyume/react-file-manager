@@ -48,14 +48,6 @@ body {
   border-radius: var(--mantine-radius-sm);
   font-weight: 500;
   cursor: pointer;
-
-  /* &[data-active] {
-    &,
-    &:hover {
-      background-color: var(--mantine-color-blue-light);
-      color: var(--mantine-color-blue-light-color);
-    }
-  } */
 }
 .link[data-active] {
   background-color: #eeeff1;

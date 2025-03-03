@@ -9,8 +9,9 @@ export const GetFileIcon = ({
   viewStyle?: ViewStyle;
 }) => {
   const iconSize = viewStyle === "list" ? 30 : 100;
+
   if (file?.isDir) {
-    return <IconFolderFilled stroke={2} size={iconSize} color="#4ab7ff" />;
+    return <IconFolderFilled size={iconSize} color="#4ab7ff" />;
   } else {
     return file?.category === "sorting" ? (
       <IconCategory size={iconSize} color="#fdcd53" />

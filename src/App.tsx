@@ -5,7 +5,7 @@ const fs: FileType[] = [
   { id: "0", name: "/", path: "/", isDir: true },
   {
     id: "1",
-    name: "123.製品",
+    name: "123",
     isDir: false,
     parentId: "0",
     lastModified: 1677021347,
@@ -30,7 +30,7 @@ const fs: FileType[] = [
   },
   {
     id: "4",
-    name: "456.排版",
+    name: "456",
     isDir: false,
     parentId: "0",
     lastModified: 1679647141,
@@ -47,16 +47,50 @@ const fs: FileType[] = [
   },
   {
     id: "6",
-    name: "全聯.製品",
+    name: "全聯",
     isDir: false,
     parentId: "5",
     lastModified: 1679647141,
     path: "/所有製品專案",
     category: "product",
   },
+  {
+    id: "7",
+    name: "1111Root",
+    isDir: true,
+    parentId: "0",
+    path: "/1111Root",
+    lastModified: 1679647141,
+  },
+  {
+    id: "8",
+    name: "1111製品",
+    isDir: true,
+    parentId: "5",
+    path: "/所有製品專案/1111製品",
+    lastModified: 1679647141,
+  },
+  {
+    id: "9",
+    name: "1111排版",
+    isDir: true,
+    parentId: "2",
+    path: "/所有的排版專案/1111排版",
+    lastModified: 1679647141,
+  },
 ];
 function App() {
-  return <FileManager fs={fs} getTest={(v: any) => console.log("app ", v)} />;
+  return (
+    <FileManager
+      fs={fs}
+      getOpenFile={(v) => {
+        console.log("getOpenFile", v);
+      }}
+      getTargetEvent={(v) => {
+        console.log("getTargetEvent", v);
+      }}
+    />
+  );
 }
 
 export default App;

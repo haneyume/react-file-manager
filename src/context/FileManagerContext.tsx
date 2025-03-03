@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { FileType, TempFile, ViewStyle } from "../type";
+import { FileType, TargetEvent, TempTarget, ViewStyle } from "../type";
 import { getNewPath, rootFile } from "../shared/static";
 
 interface Value {
@@ -11,13 +11,19 @@ interface Value {
   setViewStyle: React.Dispatch<React.SetStateAction<ViewStyle>>;
   selectedFile: FileType | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<FileType | null>>;
-  tempFile: TempFile | null;
-  setTempFile: React.Dispatch<React.SetStateAction<TempFile | null>>;
-  copyOrCutEvent: ({ file, isCut }: { file: FileType; isCut: boolean }) => void;
+  tempTarget: TempTarget | null;
+  setTempTarget: React.Dispatch<React.SetStateAction<TempTarget | null>>;
+  copyOrCutEvent: ({
+    originTarget,
+    isCut,
+  }: {
+    originTarget: FileType;
+    isCut: boolean;
+  }) => void;
   deleteEvent: (fileId: string) => void;
   reNameEvent: (file: FileType) => void;
   infoEvent: (file: FileType) => void;
-  pasteEvent: (tempFile: TempFile) => void;
+  pasteEvent: (tempTarget: TempTarget) => void;
   clickRightEvent: ({
     e,
     file,
@@ -40,10 +46,30 @@ interface Value {
   renameValue: string | null;
   setRenameValue: React.Dispatch<React.SetStateAction<string | null>>;
   saveRename: (file: FileType) => void;
+  getTargetEvent: ({
+    type,
+    originTarget,
+    newTarget,
+  }: {
+    type: TargetEvent;
+    originTarget: FileType | null;
+    newTarget: FileType;
+  }) => void;
+  getOpenFile: (file: FileType) => void;
 }
 
 interface FileManagerProviderProps {
-  fs: FileType[];
+  fs: FileType[]; //初始化檔案資料(必須要包含根目錄 id:0)
+  getOpenFile: (file: FileType) => void; // 點兩下打開檔案的事件
+  getTargetEvent: ({
+    type,
+    originTarget,
+    newTarget,
+  }: {
+    type: TargetEvent;
+    originTarget: FileType | null;
+    newTarget: FileType;
+  }) => void; // 取得正在操作的檔案/資料夾的事件( 複製貼上/剪下貼上/新增/刪除/重命名)
   children: React.ReactNode;
 }
 
@@ -56,8 +82,8 @@ const FileManagerContext = createContext<Value>({
   setViewStyle: () => {}, // 設定檔案管理顯示模式
   selectedFile: null, //  正在選擇的(檔案、資料夾)
   setSelectedFile: () => {}, // 設定正在選擇的(檔案、資料夾)
-  tempFile: null, // 暫存(複製/貼上)的檔案
-  setTempFile: () => {}, // 設定暫存(複製/貼上)的檔案
+  tempTarget: null, // 暫存(複製/貼上)的檔案
+  setTempTarget: () => {}, // 設定暫存(複製/貼上)的檔案
   copyOrCutEvent: () => {}, // 複製剪下事件
   deleteEvent: () => {}, // 刪除事件
   reNameEvent: () => {}, // 重命名事件
@@ -77,6 +103,8 @@ const FileManagerContext = createContext<Value>({
   renameValue: null, // 目前 正在重新命名 的內容
   setRenameValue: () => {}, // 設定目前 正在重新命名 的內容
   saveRename: () => {}, // 模擬儲存新檔案名稱的動作
+  getTargetEvent: () => {}, // 取得正在操作的檔案/資料夾的事件( 複製貼上/剪下貼上/新增/刪除/重命名)
+  getOpenFile: () => {}, // 點兩下打開檔案的事件
 });
 
 export const useFileManager = () => useContext(FileManagerContext);
@@ -84,7 +112,8 @@ export const useFileManager = () => useContext(FileManagerContext);
 const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   fs,
   children,
-  getTest,
+  getTargetEvent,
+  getOpenFile,
 }) => {
   // 所有檔案
   const [files, setFiles] = useState(fs);
@@ -97,8 +126,10 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   //  正在選擇的檔案
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null);
 
-  // 暫存(複製/貼上)的檔案
-  const [tempFile, setTempFile] = useState<TempFile | null>(null);
+  // 暫存(複製/貼上)的 檔案/資料夾
+  const [tempTarget, setTempTarget] = useState<TempTarget | null>(null);
+  // 來源(複製/貼上)的 檔案/資料夾
+  const [originTarget, setOriginTarget] = useState<FileType | null>(null);
 
   // 建立新的(檔案/資料夾)modal開啟狀態
   const [createNewModalOpened, setCreateNewModalOpened] = useState(false);
@@ -121,62 +152,74 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   // 目前 正在重新命名 的內容
   const [renameValue, setRenameValue] = useState<string | null>(null);
 
-  // 複製剪下事件(存在 tempFile 中)
+  // 複製剪下事件(存在 tempTarget 中)
   const copyOrCutEvent = ({
-    file,
+    originTarget,
     isCut,
   }: {
-    file: FileType;
+    originTarget: FileType;
     isCut: boolean;
   }) => {
-    if (!file) return;
+    if (!originTarget) return;
+    setOriginTarget(originTarget);
 
-    const id = isCut ? file.id : Date.now().toString();
-    const newName = isCut ? file.name : file.name + "-複製";
+    const id = isCut ? originTarget.id : Date.now().toString();
+    const newName = isCut ? originTarget.name : originTarget.name + "-複製";
 
     const newPath = getNewPath({
       currentFolder,
-      isDir: file.isDir,
+      isDir: originTarget.isDir,
       fileName: newName,
     });
     const newFile = {
-      ...file,
+      ...originTarget,
       id: id,
       name: newName,
       parentId: currentFolder.id,
       path: newPath,
     };
-
-    console.log("newFile cut ", newFile);
-    setTempFile({ ...newFile, isCut });
+    setTempTarget({ ...newFile, isCut });
   };
 
   // 貼上事件
-  const pasteEvent = (tempFile: TempFile) => {
-    if (!tempFile) return;
+  const pasteEvent = (pasteTarget: TempTarget) => {
+    if (!pasteTarget) return;
+    let targetPaste = pasteTarget;
 
-    const isSameFolder = tempFile.parentId === currentFolder.id;
-    let newFile = tempFile;
+    // 檢查貼上的 檔案/資料夾 是否已經存在在 files 中
+    const isExist = files.some((f) => f.id === pasteTarget.id);
 
-    // cut or copy 在不同資料夾, 要更新 parentId、path
-    if (!isSameFolder) {
-      newFile = {
-        ...tempFile,
-        parentId: currentFolder.id,
-        path: getNewPath({
+    // 檢查是否在同一個資料夾
+    const isSameFolder = pasteTarget.parentId === pasteTarget.id;
+
+    const newName = isExist ? pasteTarget.name + "-複製" : pasteTarget.name;
+    const newId = isExist ? Date.now().toString() : pasteTarget.id;
+    const newParentId = !isSameFolder ? currentFolder.id : pasteTarget.parentId;
+    const newPath = !isSameFolder
+      ? getNewPath({
           currentFolder,
-          isDir: tempFile.isDir,
-          fileName: tempFile.name,
-        }),
-      };
-    }
+          isDir: pasteTarget.isDir,
+          fileName: pasteTarget.name,
+        })
+      : pasteTarget.path;
 
-    getTest({
-      type: "paste",
-      file: newFile,
-      allFiles: files,
+    targetPaste = {
+      ...pasteTarget,
+      isCut: originTarget?.id === newId,
+      id: newId,
+      name: newName,
+      parentId: newParentId,
+      path: newPath,
+    };
+
+    //  將 目標檔案/資料夾 加入 暫存 目標(避免 來源目標會是錯誤的)
+    setTempTarget(targetPaste);
+    setFiles((prevFiles) => [...prevFiles, targetPaste]);
+    getTargetEvent({
+      type: targetPaste.isCut ? "cutPaste" : "copyPaste",
+      originTarget: isExist ? pasteTarget : originTarget!, // 原始檔案
+      newTarget: targetPaste,
     });
-    setFiles((prevFiles) => [...prevFiles, newFile]);
   };
 
   // 點擊滑鼠右鍵時事件
@@ -220,8 +263,19 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   };
   // 點擊 刪除事件
   const deleteEvent = (fileId: string) => {
+    const deleteFile = files.find((f) => f.id === fileId);
+
     const newFiles = files.filter((f) => f.id !== fileId);
+
     setFiles(newFiles);
+
+    if (deleteFile) {
+      getTargetEvent({
+        type: "delete",
+        originTarget: null,
+        newTarget: deleteFile,
+      });
+    }
   };
   // 模擬儲存新檔案名稱的動作，這裡可以做 API 請求或直接更新 state
   const saveRename = (file: FileType) => {
@@ -242,11 +296,21 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     });
     setFiles(newFiles);
 
+    getTargetEvent({
+      type: "rename",
+      originTarget: {
+        ...file,
+        name: file.name,
+      },
+      newTarget: {
+        ...file,
+        name: renameValue!,
+      },
+    });
+
     // 更新檔案名稱的邏輯
     setRenameFileId(null);
   };
-
-  console.log("tempFile", tempFile);
 
   const value = {
     files,
@@ -257,8 +321,8 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     setViewStyle,
     selectedFile,
     setSelectedFile,
-    tempFile,
-    setTempFile,
+    tempTarget,
+    setTempTarget,
     copyOrCutEvent,
     deleteEvent,
     reNameEvent,
@@ -278,6 +342,8 @@ const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     renameValue,
     setRenameValue,
     saveRename,
+    getTargetEvent,
+    getOpenFile,
   };
   return (
     <FileManagerContext.Provider value={value}>

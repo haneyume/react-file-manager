@@ -1,13 +1,10 @@
-import { TextInput, Text } from "@mantine/core";
-import { IconCircleArrowUpFilled, IconSearch } from "@tabler/icons-react";
+import { Text } from "@mantine/core";
+import { IconCircleArrowUpFilled } from "@tabler/icons-react";
 import ViewStyle from "./ViewStyle";
 import { useFileManager } from "../context/FileManagerContext";
+import SearchBar from "./UI/SearchBar";
 
-interface PathProps {
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
-}
-const Path: React.FC<PathProps> = ({ searchText, setSearchText }) => {
+const Path = () => {
   const { files, currentFolder, setCurrentFolder } = useFileManager();
 
   // 點擊 返回上一層
@@ -52,12 +49,7 @@ const Path: React.FC<PathProps> = ({ searchText, setSearchText }) => {
         </div>
       </div>
       <div className="flex items-center">
-        <TextInput
-          leftSection={<IconSearch />}
-          placeholder="搜尋"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
+        <SearchBar />
         {/* 檔案管理顯示模式 */}
         <ViewStyle />
       </div>

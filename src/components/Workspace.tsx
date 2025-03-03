@@ -16,7 +16,7 @@ const Workspace = () => {
     viewStyle,
     selectedFile,
     setSelectedFile,
-    tempFile,
+    tempTarget,
     copyOrCutEvent,
     pasteEvent,
     infoModalOpened,
@@ -25,9 +25,6 @@ const Workspace = () => {
     setMenuOpenId,
     setCreateNewModalOpened,
   } = useFileManager();
-
-  // 搜尋文字
-  const [searchText, setSearchText] = useState<string>("");
 
   // 任一處menu 的開啟狀態
   const [anyWhereMenuOpened, setAnyWhereMenuOpened] = useState(false);
@@ -55,7 +52,7 @@ const Workspace = () => {
 
         if (isCopy) {
           copyOrCutEvent({
-            file: selectedFile!,
+            originTarget: selectedFile!,
             isCut: false,
           });
         } else if (isCut) {
@@ -64,7 +61,7 @@ const Workspace = () => {
           );
 
           copyOrCutEvent({
-            file: selectedFile!,
+            originTarget: selectedFile!,
             isCut: true,
           });
         }
@@ -104,7 +101,7 @@ const Workspace = () => {
       />
 
       <div className="w-[85%] h-full">
-        <Path searchText={searchText} setSearchText={setSearchText} />
+        <Path />
 
         <div
           className={`${viewStyle === "grid" ? "flex flex-wrap" : ""} h-full`}
@@ -117,7 +114,7 @@ const Workspace = () => {
 
             //  檔案管理任一處按下 ctrl + v
             if (isCtrlOrCmd && isPaste) {
-              pasteEvent(tempFile!);
+              pasteEvent(tempTarget!);
             }
           }}
           onContextMenu={(e) => {
@@ -155,8 +152,8 @@ const Workspace = () => {
               </Menu.Item>
               <Menu.Item
                 leftSection={<IconClipboard stroke={1.25} />}
-                disabled={!tempFile}
-                onClick={() => pasteEvent(tempFile!)}
+                disabled={!tempTarget}
+                onClick={() => pasteEvent(tempTarget!)}
               >
                 貼上
               </Menu.Item>
