@@ -56,7 +56,7 @@ const fs: FileType[] = [
   },
 ];
 function App() {
-  return <FileManager fs={fs} getTest={(v) => console.log("app ", v)} />;
+  return <FileManager fs={fs} getTest={(v: any) => console.log("app ", v)} />;
 }
 
 export default App;
